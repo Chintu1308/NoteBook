@@ -7,14 +7,24 @@
   <title>NoteBook</title>
   <style>
     body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-color: #f0f0f0;
-  }
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden; /* Hide overflow to prevent scrolling */
+      position: relative; /* Set position relative for absolute positioning of video */
+    }
+
+    #video-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      min-width: 100%;
+      min-height: 100%;
+      z-index: -1; /* Ensure the video is behind other elements */
+    }
 
   #container {
     display: flex;
@@ -44,6 +54,9 @@
     line-height: 26px; /* Adjust this to match the background line spacing */
     background-image: linear-gradient(0deg, transparent 24px, rgba(0, 0, 0, 0.1) 25px);
     background-size: 100% 26px; /* Adjust this to match the line-height */
+    outline: none;
+    border-radius: 25px;
+    box-shadow: 5px 5px 8px black;
   }
 
   #editor p {
@@ -76,28 +89,53 @@
     #editor .current-line::before {
       background-color: rgba(255, 0, 0, 0.7);
     }
+  
+    .active-line {
+      background-color: #ffdddd; /* Change this to the color you want */
+    }
+
+    #editor.active-line::before {
+      background-color: rgba(255, 0, 0, 0.7);
+      box-shadow: 0px 0px 10px rgba(255, 0, 0, 0.7);
+    }
   </style>
   <script>
     window.onload = function() {
       var editor = document.getElementById('editor');
-      editor.addEventListener('input', function() {
-        var range = window.getSelection().getRangeAt(0);
-        var node = document.createElement('span');
-        node.classList.add('highlight');
-        range.surroundContents(node);
 
+      editor.onfocus = function() {
+      editor.classList.add('active-line');
+    }
+
+    editor.onblur = function() {
+      editor.classList.remove('active-line');
+    }
+
+    editor.addEventListener('input', function() {
+      var range = window.getSelection().getRangeAt(0);
+      var node = range.startContainer;
+
+      while (node && node.parentNode !== editor) {
+        node = node.parentNode;
+      }
+
+      if (node) {
         var previousLine = document.querySelector('.current-line');
         if (previousLine) {
           previousLine.classList.remove('current-line');
         }
 
         node.classList.add('current-line');
-        range.surroundContents(node);
-      });
-    }
+      }
+    });
+  }
   </script>
 </head>
 <body>
+  <video autoplay muted loop id="video-background">
+    <source src="images/bg.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
   <div id="container">
     <div id="editor-container">
       <div id="editor" contenteditable="true">
