@@ -2,38 +2,56 @@
 <html>
 <head>
   <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
-
-    <title>NoteBook</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+  <title>NoteBook</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      background-color: #f0f0f0;
-    }
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+  }
 
-    #editor {
-      position: relative;
-      width: 60%;
-      min-height: 500px;
-      padding: 10px;
-      padding-left: 50px;
-      padding-top: 23px;
-      background-image: linear-gradient(0deg, transparent 24px, rgba(0, 0, 0, 0.1) 25px);
-      background-size: 100% 26px;
-      border-radius: 10px;
-      line-height: 27px;
-      overflow: auto;
-      background-color: white;
-      font-family: 'Geomanist';
-      font-size: 16px;
-    }
+  #container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 60%;
+  }
 
+  #editor-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    position: relative;
+  }
+
+     #editor {
+    position: relative;
+    width: 100%;
+    min-height: 500px;
+    padding: 10px;
+    padding-left: 50px;
+    padding-top: 23px;
+    background-color: white;
+    font-family: 'Geomanist';
+    font-size: 16px;
+    line-height: 26px; /* Adjust this to match the background line spacing */
+    background-image: linear-gradient(0deg, transparent 24px, rgba(0, 0, 0, 0.1) 25px);
+    background-size: 100% 26px; /* Adjust this to match the line-height */
+  }
+
+  #editor p {
+    margin: 0; /* Reset the margin */
+    padding: 0; /* Reset the padding */
+  }
+
+  
     #editor::before {
       content: "";
       position: absolute;
@@ -62,7 +80,7 @@
   <script>
     window.onload = function() {
       var editor = document.getElementById('editor');
-      editor.onkeyup = function() {
+      editor.addEventListener('input', function() {
         var range = window.getSelection().getRangeAt(0);
         var node = document.createElement('span');
         node.classList.add('highlight');
@@ -75,13 +93,17 @@
 
         node.classList.add('current-line');
         range.surroundContents(node);
-      }
+      });
     }
   </script>
 </head>
 <body>
-  <div id="editor" contenteditable="true">
-    <p id="bh-KESCYer2ydjBnH3QsxEve" data-hook-type="blockHook" data-bubble-menu="true"></p>
+  <div id="container">
+    <div id="editor-container">
+      <div id="editor" contenteditable="true">
+        <p id="bh-KESCYer2ydjBnH3QsxEve" data-hook-type="blockHook" data-bubble-menu="true"></p>
+      </div>
+    </div>
   </div>
 </body>
 </html>
