@@ -18,13 +18,16 @@
     }
 
     #video-background {
-      position: absolute;
-      top: 0;
-      left: 0;
-      min-width: auto;
-      min-height: auto;
-      z-index: -1; /* Ensure the video is behind other elements */
-    }
+  position: fixed; /* Change this from absolute to fixed */
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  z-index: -1; /* Ensure the video is behind other elements */
+  object-fit: cover; /* This will cover the entire container */
+}
 
   #container {
     display: flex;
@@ -134,7 +137,7 @@
 <body>
   <video autoplay muted loop id="video-background">
     <source src="images/bg.mp4" type="video/mp4">
-    Your browser does not support the video tag.
+    Your browser does not support the our work.
   </video>
   <div id="container">
     <div id="editor-container">
